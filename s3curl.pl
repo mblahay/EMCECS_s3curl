@@ -123,7 +123,7 @@ Usage $0 --id friendly-name (or AWSAccessKeyId) [options] -- [curl-options] [URL
   --createBucket [<region>]   create-bucket with optional location constraint
   --head                      HEAD request
   --debug                     enable debug logging
-  --sm                        sign the metadata in a metadata query (for ECS 3.0)
+  --sm                        do NOT sign the metadata in a metadata query (for ECS 3.0). Signing is the default
 
  common curl options:
   -H 'x-amz-acl: public-read' another way of using canned ACLs
