@@ -203,7 +203,7 @@ for (my $i=0; $i<@ARGV; $i++) {
         my @attributes = ();
         #if the -sm command line option was used then this is probably a search metadata query
         #and the query=xxx needs to be signed in ECS v3.0
-        if ($sm) {
+        if ( ! $sm ) {
             push (@resources, "query");
         }
         for my $attribute (@resources) {
@@ -212,13 +212,12 @@ for (my $i=0; $i<@ARGV; $i++) {
             }
         }
         if (@attributes) {
-            debug("JMC there are attributes");
+            debug("there are attributes");
             $resource .= "?" . join("&", @attributes);
-            debug("JMC resource in attributes = $resource");
+            debug("resource in attributes = $resource");
         }
         # handle virtual hosted requests
         getResourceToSign($host, \$resource);
-        debug("JMC1 resource = $resource");
     }
     elsif ($arg =~ /\-X/) {
         # mainly for DELETE
@@ -242,7 +241,6 @@ for (my $i=0; $i<@ARGV; $i++) {
     }
 }
 
-debug("JMC2 resource = $resource");
 die "Couldn't find resource by digging through your curl command line args!"
     unless defined $resource;
 
@@ -256,13 +254,13 @@ foreach (sort (keys %xamzHeaders)) {
 my $httpDate = (defined $xamzHeaders{'x-amz-date'}) ? '' : POSIX::strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime);
 my $stringToSign = "$method\n$contentMD5\n$contentType\n$httpDate\n$xamzHeadersToSign$resource";
 
-debug("JMC method = $method");
-debug("JMC contentMD5 = $contentMD5");
-debug("JMC contentType = $contentType");
-debug("JMC httpDate = $httpDate");
-debug("JMC xamzHeadersToSign = $xamzHeadersToSign");
-debug("JMC resource = $resource");
-debug("JMC ");
+debug("method = $method");
+debug("contentMD5 = $contentMD5");
+debug("contentType = $contentType");
+debug("httpDate = $httpDate");
+debug("xamzHeadersToSign = $xamzHeadersToSign");
+debug("resource = $resource");
+debug(" ");
 
 debug("StringToSign='" . $stringToSign . "'");
 my $hmac = Digest::HMAC_SHA1->new($secretKey);
@@ -313,9 +311,7 @@ sub debug {
 
 sub getResourceToSign {
     my ($host, $resourceToSignRef) = @_;
-    debug("JMC3 resourceToSignRef = $$resourceToSignRef");
     for my $ep (@endpoints) {
-        debug("JMC ep = $ep");
         if ($host =~ /(.*)\.$ep/) { # vanity subdomain case
             my $vanityBucket = $1;
             $$resourceToSignRef = "/$vanityBucket".$$resourceToSignRef;
