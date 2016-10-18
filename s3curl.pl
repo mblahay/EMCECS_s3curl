@@ -206,7 +206,7 @@ for (my $i=0; $i<@ARGV; $i++) {
         if ( ! $sm ) {
             push (@resources, "query");
         }
-        for my $attribute (@resources) {
+        for my $attribute (sort @resources) {
             if ($query =~ /(?:^|&)($attribute(?:=[^&]*)?)(?:&|$)/) {
                 push @attributes, uri_unescape($1);
             }
