@@ -8,6 +8,7 @@ For example:
 
 %awsSecretAccessKeys = (
     # personal account
+    # personal is a [friendly-name] . It can be named anything & is used in given s3curl commands.
     personal => {
         id => '1ME55KNV6SBTR7EXG0R2',
         key => 'zyMrlZUKeG9UcYpwzlPko/+Ciu0K2co0duRM3fhi',
@@ -20,8 +21,7 @@ For example:
     },
 );
 
-After creating the .s3curl file, you can try the following commands using s3curl
-
+After creating the .s3curl file, you can try the following commands using s3curl. 
 
 To get an object, you would run:
 
@@ -31,6 +31,9 @@ If you just want to see the object's metadata, run:
 
 ./s3curl.pl --id=[friendly=name] --head -- http://s3.amazonaws.com/[bucket-name]/[key-name]
 
+[Note]
+Install perl-Digest-HMAC.noarch package , if you got an error while running s3curl commands starting with the below phrase.  
+"Can't locate Digest/HMAC_SHA1.pm in @INC"
 
 The arguments after the '--' are passed through to curl, so you could put any
 curl specific options there, and then the url you are trying to get.
